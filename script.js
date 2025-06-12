@@ -38,7 +38,6 @@ function gerarSenha() {
     senha += caracteresSelecionados.charAt(Math.floor(Math.random() * caracteresSelecionados.length));
   }
 
-  // Animação fade out/in ao atualizar a senha
   campoSenha.style.opacity = 0;
   setTimeout(() => {
     campoSenha.value = senha;
@@ -51,12 +50,10 @@ function gerarSenha() {
 }
 
 function calcularEntropia(tamanho, base) {
-  // Entropia = tamanho * log2(base)
   return tamanho * Math.log2(base);
 }
 
 function atualizarBarra(entropia) {
-  // Define largura e cor da barra conforme entropia
   if (entropia === 0) {
     forcaSenha.style.width = '0%';
     forcaSenha.className = 'forca';
@@ -80,15 +77,13 @@ function atualizarEntropia(entropia) {
     return;
   }
 
-  // Exemplo simples para dias de força da senha (aprox)
-  const dias = Math.round(Math.pow(2, entropia) / (60 * 60 * 24 * 10 ** 9)); // velocidade super alta de tentativa
+  const dias = Math.round(Math.pow(2, entropia) / (60 * 60 * 24 * 10 ** 9));
   let texto;
   if (dias < 1) texto = 'Senha pode ser descoberta em menos de um dia.';
   else texto = `Um computador pode levar até ${dias.toLocaleString('pt-BR')} dias para descobrir essa senha.`;
   entropiaTexto.textContent = texto;
 }
 
-// Botões + e -
 botoes.forEach(botao => {
   botao.addEventListener('click', () => {
     if (botao.textContent === '+') {
@@ -107,14 +102,12 @@ botoes.forEach(botao => {
   });
 });
 
-// Checkbox para re-gerar senha ao alterar opções
 checkboxes.forEach(box => {
   box.addEventListener('change', () => {
     gerarSenha();
   });
 });
 
-// Toggle tema e ícone
 function alternarTema() {
   if (body.classList.contains('tema-claro')) {
     body.classList.remove('tema-claro');
@@ -125,12 +118,27 @@ function alternarTema() {
     body.classList.add('tema-claro');
     temaToggleBtn.textContent = '🌞';
   }
-  gerarSenha();
+  aplicarFundoPorTema();
 }
 
 temaToggleBtn.addEventListener('click', alternarTema);
 
-// Inicializa tudo
+function aplicarFundoPorTema() {
+  if (body.classList.contains('tema-escuro')) {
+    body.style.backgroundImage = "url('https://wallpapercave.com/wp/wp2831929.jpg')";
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundAttachment = 'fixed';
+  } else {
+    body.style.backgroundImage = "url('https://i.pinimg.com/736x/07/07/8d/07078da2325216eb39a8f26a15d4f1f5.jpg')";
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundAttachment = 'fixed';
+  }
+}
+
+// Inicializa
+body.classList.add('tema-escuro');
+temaToggleBtn.textContent = '🌙';
+aplicarFundoPorTema();
 numeroSenha.textContent = tamanhoSenha;
 gerarSenha();
 
