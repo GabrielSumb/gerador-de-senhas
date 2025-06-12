@@ -9,20 +9,18 @@
 </head>
 
 <body class="tema-escuro">
-    <button class="tema-toggle" id="btn-tema">🌙</button>
+    <button class="tema-toggle" id="toggle-tema">&#9788;</button>
 
     <section class="conteudo">
         <div class="conteudo-titulo">
-            <img src="pngwing.com.png" alt="cadeado fechado">
+            <img src="unlock.svg" alt="cadeado fechado">
             <h2 class="titulo-principal">Gerador de senhas</h2>
             <h3 class="titulo-secundario">Gere instantaneamente uma senha aleatória e segura</h3>
         </div>
-
         <div class="conteudo-senha">
             <label for="senha">Senha</label>
             <input name="senha" type="text" id="campo-senha" readonly>
         </div>
-
         <div class="parametro">
             <h3 class="parametro-titulo">Personalize sua senha</h3>
             <div class="parametro-coluna__senha">
@@ -34,7 +32,6 @@
                         <button class="parametro-senha__botao">+</button>
                     </div>
                 </div>
-
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Características da senha</h4>
                     <div class="parametro-senha-checkbox">
@@ -54,7 +51,6 @@
                         <label for="simbolo">Símbolos</label>
                     </div>
                 </div>
-
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Força da senha</h4>
                     <div class="barra"></div>
@@ -70,18 +66,40 @@
         </div>
     </section>
 
-    <footer>Feito por: Gabriel H. Nº17</footer>
+    <footer>
+        Feito por: Gabriel H. Nº17
+    </footer>
 
-    <script src="script.js"></script>
     <script>
-        const btnTema = document.getElementById('btn-tema');
+        const botaoTema = document.getElementById('toggle-tema');
+        const body = document.body;
 
-        btnTema.addEventListener('click', () => {
-            document.body.classList.toggle('tema-claro');
-            document.body.classList.toggle('tema-escuro');
-            btnTema.textContent = document.body.classList.contains('tema-claro') ? '🌞' : '🌙';
+        function aplicaTemaEscuro() {
+            body.classList.add('tema-escuro');
+            body.classList.remove('tema-claro');
+            body.style.backgroundImage = "url('https://wallpapercave.com/wp/wp2831929.jpg')";
+        }
+
+        function aplicaTemaClaro() {
+            body.classList.add('tema-claro');
+            body.classList.remove('tema-escuro');
+            body.style.backgroundImage = "url('https://i.pinimg.com/736x/07/07/8d/07078da2325216eb39a8f26a15d4f1f5.jpg')";
+        }
+
+        botaoTema.addEventListener('click', () => {
+            if (body.classList.contains('tema-escuro')) {
+                aplicaTemaClaro();
+                botaoTema.innerHTML = '&#9790;';
+            } else {
+                aplicaTemaEscuro();
+                botaoTema.innerHTML = '&#9788;';
+            }
         });
+
+        aplicaTemaEscuro();
     </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
+
