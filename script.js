@@ -1,4 +1,13 @@
+// Seleciona elementos do DOM
 const numeroSenha = document.querySelector('.parametro-senha__texto');
+const campoSenha = document.querySelector('#campo-senha');
+const checkbox = document.querySelectorAll('.checkbox');
+const botoes = document.querySelectorAll('.parametro-senha__botao');
+const forcaSenha = document.querySelector('.forca');
+const valorEntropia = document.querySelector('.entropia');
+const botaoTema = document.querySelector('#botao-tema');
+const body = document.body;
+
 let tamanhoSenha = 12;
 numeroSenha.textContent = tamanhoSenha;
 
@@ -7,34 +16,22 @@ const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
 const numeros = '0123456789';
 const simbolos = '!@%*?';
 
-const botoes = document.querySelectorAll('.parametro-senha__botao');
-const campoSenha = document.querySelector('#campo-senha');
-const checkbox = document.querySelectorAll('.checkbox');
-const forcaSenha = document.querySelector('.forca');
-
-botoes[0].onclick = diminuiTamanho;
-botoes[1].onclick = aumentaTamanho;
-
-function diminuiTamanho() {
-    if (tamanhoSenha > 1) {
-        tamanhoSenha--;
-    }
+// Funções de incremento e decremento do tamanho da senha
+botoes[0].onclick = () => {
+    if (tamanhoSenha > 1) tamanhoSenha--;
     numeroSenha.textContent = tamanhoSenha;
     geraSenha();
-}
+};
 
-function aumentaTamanho() {
-    if (tamanhoSenha < 20) {
-        tamanhoSenha++;
-    }
+botoes[1].onclick = () => {
+    if (tamanhoSenha < 20) tamanhoSenha++;
     numeroSenha.textContent = tamanhoSenha;
     geraSenha();
-}
+};
 
-for (let i = 0; i < checkbox.length; i++) {
-    checkbox[i].onclick = geraSenha;
-}
+checkbox.forEach(c => c.addEventListener('change', geraSenha));
 
+// Gera senha automaticamente na inicialização
 geraSenha();
 
 function geraSenha() {
@@ -46,8 +43,8 @@ function geraSenha() {
 
     let senha = '';
     for (let i = 0; i < tamanhoSenha; i++) {
-        let numeroAleatorio = Math.floor(Math.random() * alfabeto.length);
-        senha += alfabeto[numeroAleatorio];
+        const index = Math.floor(Math.random() * alfabeto.length);
+        senha += alfabeto[index];
     }
 
     campoSenha.value = senha;
@@ -55,39 +52,28 @@ function geraSenha() {
 }
 
 function classificaSenha(tamanhoAlfabeto) {
-    let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    forcaSenha.classList.remove('fraca', 'media', 'forte');
+    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    forcaSenha.className = 'forca';
 
     if (entropia > 57) {
         forcaSenha.classList.add('forte');
-    } else if (entropia > 35 && entropia <= 57) {
+    } else if (entropia > 35) {
         forcaSenha.classList.add('media');
     } else {
         forcaSenha.classList.add('fraca');
     }
 
-    const valorEntropia = document.querySelector('.entropia');
-    const dias = Math.floor(2 ** entropia / (100e6 * 60 * 60 * 24));
+    const dias = Math.floor((2 ** entropia) / (100e6 * 60 * 60 * 24));
     valorEntropia.textContent = `Um computador pode levar até ${dias} dias para descobrir essa senha.`;
 }
 
-// Alternância de tema
-const botaoTema = document.createElement('button');
-botaoTema.classList.add('tema-toggle');
-botaoTema.innerHTML = '🌙';
-document.body.appendChild(botaoTema);
-
+// Alterna o tema (claro/escuro)
 botaoTema.addEventListener('click', () => {
-    if (document.body.classList.contains('tema-escuro')) {
-        document.body.classList.remove('tema-escuro');
-        document.body.classList.add('tema-claro');
-        botaoTema.innerHTML = '🌞';
+    if (body.classList.contains('tema-escuro')) {
+        body.classList.remove('tema-escuro');
+        body.classList.add('tema-claro');
     } else {
-        document.body.classList.remove('tema-claro');
-        document.body.classList.add('tema-escuro');
-        botaoTema.innerHTML = '🌙';
+        body.classList.remove('tema-claro');
+        body.classList.add('tema-escuro');
     }
 });
-
-// Tema padrão
-document.body.classList.add('tema-escuro');
