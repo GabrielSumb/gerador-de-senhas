@@ -8,17 +8,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="tema-escuro">
+    <button class="tema-toggle" id="btn-tema">🌙</button>
+
     <section class="conteudo">
         <div class="conteudo-titulo">
             <img src="unlock.svg" alt="cadeado fechado">
             <h2 class="titulo-principal">Gerador de senhas</h2>
             <h3 class="titulo-secundario">Gere instantaneamente uma senha aleatória e segura</h3>
         </div>
+
         <div class="conteudo-senha">
             <label for="senha">Senha</label>
             <input name="senha" type="text" id="campo-senha" readonly>
         </div>
+
         <div class="parametro">
             <h3 class="parametro-titulo">Personalize sua senha</h3>
             <div class="parametro-coluna__senha">
@@ -30,6 +34,7 @@
                         <button class="parametro-senha__botao">+</button>
                     </div>
                 </div>
+
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Características da senha</h4>
                     <div class="parametro-senha-checkbox">
@@ -49,6 +54,7 @@
                         <label for="simbolo">Símbolos</label>
                     </div>
                 </div>
+
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Força da senha</h4>
                     <div class="barra"></div>
@@ -63,7 +69,19 @@
             </div>
         </div>
     </section>
+
+    <footer>Feito por: Gabriel H. Nº17</footer>
+
     <script src="script.js"></script>
+    <script>
+        const btnTema = document.getElementById('btn-tema');
+
+        btnTema.addEventListener('click', () => {
+            document.body.classList.toggle('tema-claro');
+            document.body.classList.toggle('tema-escuro');
+            btnTema.textContent = document.body.classList.contains('tema-claro') ? '🌞' : '🌙';
+        });
+    </script>
 </body>
 
 </html>
