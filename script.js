@@ -1,79 +1,50 @@
-// Seleciona elementos do DOM
-const numeroSenha = document.querySelector('.parametro-senha__texto');
-const campoSenha = document.querySelector('#campo-senha');
-const checkbox = document.querySelectorAll('.checkbox');
-const botoes = document.querySelectorAll('.parametro-senha__botao');
-const forcaSenha = document.querySelector('.forca');
-const valorEntropia = document.querySelector('.entropia');
-const botaoTema = document.querySelector('#botao-tema');
+// Seleciona o botão de toggle do tema
+const temaToggle = document.querySelector('.tema-toggle');
 const body = document.body;
 
-let tamanhoSenha = 12;
-numeroSenha.textContent = tamanhoSenha;
-
-const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
-const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
-const numeros = '0123456789';
-const simbolos = '!@%*?';
-
-// Funções de incremento e decremento do tamanho da senha
-botoes[0].onclick = () => {
-    if (tamanhoSenha > 1) tamanhoSenha--;
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
-};
-
-botoes[1].onclick = () => {
-    if (tamanhoSenha < 20) tamanhoSenha++;
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
-};
-
-checkbox.forEach(c => c.addEventListener('change', geraSenha));
-
-// Gera senha automaticamente na inicialização
-geraSenha();
-
-function geraSenha() {
-    let alfabeto = '';
-    if (checkbox[0].checked) alfabeto += letrasMaiusculas;
-    if (checkbox[1].checked) alfabeto += letrasMinusculas;
-    if (checkbox[2].checked) alfabeto += numeros;
-    if (checkbox[3].checked) alfabeto += simbolos;
-
-    let senha = '';
-    for (let i = 0; i < tamanhoSenha; i++) {
-        const index = Math.floor(Math.random() * alfabeto.length);
-        senha += alfabeto[index];
-    }
-
-    campoSenha.value = senha;
-    classificaSenha(alfabeto.length);
+// Função para aplicar o tema escuro
+function aplicarTemaEscuro() {
+  body.classList.add('tema-escuro');
+  body.classList.remove('tema-claro');
+  // Aplica a imagem de fundo do modo escuro
+  body.style.backgroundImage = "url('https://wallpapercave.com/wp/wp2831929.jpg')";
 }
 
-function classificaSenha(tamanhoAlfabeto) {
-    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    forcaSenha.className = 'forca';
-
-    if (entropia > 57) {
-        forcaSenha.classList.add('forte');
-    } else if (entropia > 35) {
-        forcaSenha.classList.add('media');
-    } else {
-        forcaSenha.classList.add('fraca');
-    }
-
-    const dias = Math.floor((2 ** entropia) / (100e6 * 60 * 60 * 24));
-    valorEntropia.textContent = `Um computador pode levar até ${dias} dias para descobrir essa senha.`;
+// Função para aplicar o tema claro
+function aplicarTemaClaro() {
+  body.classList.add('tema-claro');
+  body.classList.remove('tema-escuro');
+  // Aplica a imagem de fundo do modo claro
+  body.style.backgroundImage = "url('https://i.pinimg.com/736x/07/07/8d/07078da2325216eb39a8f26a15d4f1f5.jpg')";
 }
 
-// Alterna o tema (claro/escuro)
-botaoTema.addEventListener('click', () => {
-    if (body.classList.contains('tema-escuro')) {
-        body.classList.remove('tema-escuro');
-        body.classList.add('tema-claro');
-    } else {
-        body.classList.remove('tema-claro');
-        body.classList.add('tema-escuro');
-    }
-});
+// Função para alternar o tema ao clicar no botão
+function alternarTema() {
+  if (body.classList.contains('tema-escuro')) {
+    aplicarTemaClaro();
+    temaToggle.textContent = '☀️'; // ícone de sol para tema claro
+    localStorage.setItem('tema', 'claro');
+  } else {
+    aplicarTemaEscuro();
+    temaToggle.textContent = '🌙'; // ícone de lua para tema escuro
+    localStorage.setItem('tema', 'escuro');
+  }
+}
+
+// Inicializa o tema baseado no armazenamento local ou padrão para escuro
+function inicializarTema() {
+  const temaSalvo = localStorage.getItem('tema');
+  if (temaSalvo === 'claro') {
+    aplicarTemaClaro();
+    temaToggle.textContent = '☀️';
+  } else {
+    aplicarTemaEscuro();
+    temaToggle.textContent = '🌙';
+  }
+}
+
+// Event listener no botão de tema
+temaToggle.addEventListener('click', alternarTema);
+
+// Inicializa ao carregar a página
+inicializarTema();
